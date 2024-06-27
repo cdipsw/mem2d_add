@@ -1,0 +1,47 @@
+MEM2D_ADD - Installation instructions			June 2024
+
+--------------------------------------------------------------------------------
+PREPARING THE ENVIRONMENT:
+Requirements for building and running the MEM2D_ADD code include the 
+installation of a fortran compiler, libcurl, and netCDF4, including the 
+developers (dev) package.
+
+For example, on a clean debian linux install, the following steps may suffice:
+  % sudo add-apt-repository universe
+  % sudo apt update
+  % sudo apt install gfortran
+  % sudo apt install netcdf-bin
+  % sudo apt install libnetcdf-dev
+  % sudo apt install libnetcdff-dev (if libnetcdf-dev excludes fortran libs)
+  % sudo apt install libcurl4
+
+
+--------------------------------------------------------------------------------
+BUILDING THE CODE:
+To build the code, first the f90_modules are made, and then code in the source
+directory. 
+
+ - If needed, update paths to libraries in f90_modules/Makefile and 
+     source/Makefile
+
+ - Run the following commands, starting from mem2d_add-main:
+     % cd f90_modules; make all
+     % cd ../source; make
+
+     
+--------------------------------------------------------------------------------
+RUNNING THE PROGRAM:
+Test the binary by running with the help option:
+  % ./mem2d_add help
+
+Generate 2D estimates for a month of Harvest Buoy data:
+  % ./mem2d_add 071 202312
+
+View output with your favorite netCDF client:
+  % ncview 071p1_202312_mem2d.nc
+
+
+
+The newly-generated 2D output can be found in the variable 
+'waveDirectionalSpectrum'. For more details on these spectral estimates, please
+see docs/info.txt in this repository.

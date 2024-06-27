@@ -1,0 +1,55 @@
+MEM2D_ADD - Program description					June 2024
+--------------------------------------------------------------------------------
+
+MEM2D_ADD estimates a 2D spectrum using the Maximum Entropy Method for each
+record in a standard CDIP buoy waveCDF dataset.
+
+Data are loaded via opendap from the CDIP THREDDS server, and an output
+waveCDF dataset is created locally with the coordinate dimension 'waveDirection' 
+and the variable 'waveDirectionalSpectrum' added to hold the 2D spectra.
+
+2D spectra can be requested for any CDIP dataset which holds Datawell 
+Directional Waverider observations.
+
+
+--------------------------------------------------------------------------------
+ESTIMATOR DETAILS
+
+The Maximum Entropy Method (MEM) is ONE WAY to estimate a 2d spectrum from the 
+buoy data. CDIP uses it because it makes narrow directional spectra for swell 
+in the Pacific.
+
+For information on the MEM estimator and its limitations, please see:
+  Kuik et al,
+  A Method for the Routine Analysis of Pitch-and-Roll Buoy Wave Data
+  http://journals.ametsoc.org/doi/abs/10.1175/1520-0485(1988)018%3C1020:AMFTRA%3E2.0.CO;2
+
+  Lygre & Krogstad,
+  Maximum Entropy Estimation of the Directional Distribution in Ocean Wave Spectra
+  http://journals.ametsoc.org/doi/abs/10.1175/1520-0485(1986)016%3C2052%3AMEEOTD%3E2.0.CO%3B2
+
+  Ochoa & Delgado-Gonzalez,
+  Pitfalls in the estimation of wind wave directional spectra by variational principles
+  http://www.sciencedirect.com/science/article/pii/S014111870580025
+
+
+By default the directions are grouped in 5-degree bins; the first directional
+bin is centered at 5 degrees, and the last is centered at 360 degrees. The
+frequency bands are the same as returned by the buoys. For Datawell DWR4 buoys 
+there are 100 frequency bands from 0.025Hz to 1.00Hz, whereas all other buoy 
+types have 64 frequency bands from 0.025Hz to 0.58Hz. The 2D energy density 
+values are given in units of m*m/Hz/deg.
+
+
+
+HELP OUTPUT (% mem2d_add help):
+c-----------------------------------------------------------------------------
+c- MEM2D_ADD - creates a new waveCDF dataset with wave data plus MEM 2D
+c-  spectra for the requested station and dates. The 2D spectra is in the CDIP-
+c-  standard 5-degree layout, and stored in the var 'waveDirectionalSpectrum'.
+c-  Please see the cdipsw/mem2d_add project on github for more details.
+c-
+c-  Arguments: 1 - 3-digit station number (required)
+c-             2 - Start time, YYYYMMDD or portion thereof (required)
+c-             3 - end time, YYYYMMDD (optional); max request length = 1 year
+c-----------------------------------------------------------------------------
